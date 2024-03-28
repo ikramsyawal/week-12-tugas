@@ -24,11 +24,11 @@ function Board() {
   useEffect(() => {
     const nextVal = calculateNextValue(squares);
     setNextValue(nextVal);
-    console.log("Next Value:", nextVal); // Debugging nextValue
+    console.log("Next Value:", nextVal); // debugging next value
 
     const win = calculateWinner(squares);
     setWinner(win);
-    console.log("Winner:", win); // Debugging winner
+    console.log("Winner:", win); // debugging winner
   }, [squares]);
 
   useEffect(() => {
@@ -42,7 +42,10 @@ function Board() {
 
   function renderSquare(i) {
     return (
-      <button className="square" onClick={() => selectSquare(i)}>
+      <button
+        className="square-button bg-slate-100 h-28 w-28 border m-2 text-amber-400 rounded-lg text-8xl"
+        onClick={() => selectSquare(i)}
+      >
         {squares[i]}
       </button>
     );
@@ -51,22 +54,27 @@ function Board() {
   return (
     <div>
       <div>{status}</div>
-      <div>
+      <div className="flex items-center">
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
       </div>
-      <div>
+      <div className="flex items-center">
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
       </div>
-      <div>
+      <div className="flex items-center">
         {renderSquare(6)}
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      <button onClick={restart}>restart</button>
+      <button
+        className="bg-slate-600 text-4xl px-4 py-2 mt-2 rounded-lg"
+        onClick={restart}
+      >
+        Restart
+      </button>
     </div>
   );
 }
@@ -74,9 +82,9 @@ function Board() {
 // komponen Game
 function Game() {
   return (
-    <div>
-      <div>
-        <h1>Tic Tac Toe</h1>
+    <div className="flex justify-center text-center text-white">
+      <div className="text-2xl">
+        <h1 className="text-6xl mb-8 mt-4">Tic Tac Toe</h1>
         <Board />
       </div>
     </div>
