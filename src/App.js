@@ -11,6 +11,7 @@ function Board() {
     if (winner) {
       return;
     }
+    console.log(square);
     setSquares((prevSquares) => {
       if (prevSquares[square] === null) {
         const newSquares = [...prevSquares];
@@ -24,11 +25,9 @@ function Board() {
   useEffect(() => {
     const nextVal = calculateNextValue(squares);
     setNextValue(nextVal);
-    console.log("Next Value:", nextVal); // debugging next value
 
     const win = calculateWinner(squares);
     setWinner(win);
-    console.log("Winner:", win); // debugging winner
   }, [squares]);
 
   useEffect(() => {
@@ -41,9 +40,16 @@ function Board() {
   }
 
   function renderSquare(i) {
+    let colorClass = "";
+    if (squares[i] === "X") {
+      colorClass = "text-emerald-500";
+    } else {
+      colorClass = "text-amber-500";
+    }
+
     return (
       <button
-        className="square-button bg-slate-100 h-28 w-28 border m-2 text-amber-400 rounded-lg text-8xl"
+        className={`square-button bg-slate-100 h-28 w-28 border m-2 rounded-lg text-8xl ${colorClass}`}
         onClick={() => selectSquare(i)}
       >
         {squares[i]}
@@ -53,7 +59,7 @@ function Board() {
 
   return (
     <div>
-      <div>{status}</div>
+      <div className="mb-3">{status}</div>
       <div className="flex items-center">
         {renderSquare(0)}
         {renderSquare(1)}
@@ -70,7 +76,7 @@ function Board() {
         {renderSquare(8)}
       </div>
       <button
-        className="bg-slate-600 text-4xl px-4 py-2 mt-2 rounded-lg"
+        className="bg-gray-500 hover:bg-gray-600 active:bg-gray-700 focus:outline-none text-4xl px-4 py-2 mt-3 rounded-lg"
         onClick={restart}
       >
         Restart
