@@ -11,7 +11,6 @@ function Board() {
     if (winner) {
       return;
     }
-    console.log(square);
     setSquares((prevSquares) => {
       if (prevSquares[square] === null) {
         const newSquares = [...prevSquares];
