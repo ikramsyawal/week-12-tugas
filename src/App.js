@@ -1,13 +1,43 @@
+import { useState, useEffect } from "react";
 
-import * as React from 'react';
-
+// komponen Board
 function Board() {
-  const squares = Array(9).fill(null);
-  function selectSquare(square) {
+  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [status, setStatus] = useState("");
+  const [nextValue, setNextValue] = useState(calculateNextValue(squares));
+  const [winner, setWinner] = useState(calculateWinner(squares));
 
+  function selectSquare(square) {
+    if (winner) {
+      return;
+    }
+    setSquares((prevSquares) => {
+      if (prevSquares[square] === null) {
+        const newSquares = [...prevSquares];
+        newSquares[square] = nextValue;
+        return newSquares;
+      }
+      return prevSquares;
+    });
   }
 
+  useEffect(() => {
+    const nextVal = calculateNextValue(squares);
+    setNextValue(nextVal);
+    console.log("Next Value:", nextVal); // Debugging nextValue
+
+    const win = calculateWinner(squares);
+    setWinner(win);
+    console.log("Winner:", win); // Debugging winner
+  }, [squares]);
+
+  useEffect(() => {
+    const stat = calculateStatus(winner, squares, nextValue);
+    setStatus(stat);
+  }, [winner, squares, nextValue]);
+
   function restart() {
+    setSquares(Array(9).fill(null));
   }
 
   function renderSquare(i) {
@@ -20,33 +50,33 @@ function Board() {
 
   return (
     <div>
-      <div >STATUS</div>
-      <div >
+      <div>{status}</div>
+      <div>
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
       </div>
-      <div >
+      <div>
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
       </div>
-      <div >
+      <div>
         {renderSquare(6)}
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      <button onClick={restart}>
-        restart
-      </button>
+      <button onClick={restart}>restart</button>
     </div>
   );
 }
 
+// komponen Game
 function Game() {
   return (
-    <div >
-      <div >
+    <div>
+      <div>
+        <h1>Tic Tac Toe</h1>
         <Board />
       </div>
     </div>
@@ -58,13 +88,13 @@ function calculateStatus(winner, squares, nextValue) {
   return winner
     ? `Winner: ${winner}`
     : squares.every(Boolean)
-      ? `Scratch: Cat's game`
-      : `Next player: ${nextValue}`;
+    ? `Scratch: Cat's game`
+    : `Next player: ${nextValue}`;
 }
 
 // eslint-disable-next-line no-unused-vars
 function calculateNextValue(squares) {
-  return squares.filter(Boolean).length % 2 === 0 ? 'X' : 'O';
+  return squares.filter(Boolean).length % 2 === 0 ? "X" : "O";
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -88,6 +118,7 @@ function calculateWinner(squares) {
   return null;
 }
 
+// componen app
 function App() {
   return <Game />;
 }
